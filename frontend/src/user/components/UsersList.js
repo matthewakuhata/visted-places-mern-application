@@ -3,7 +3,7 @@ import React from 'react';
 import UserItem from './UserItem';
 import './UsersList.css';
 
-const UsersList = (items) => {
+const UsersList = ({items}) => {
   if (items.length === 0) {
     return (
       <div className="center">
@@ -12,9 +12,11 @@ const UsersList = (items) => {
     );
   }
 
+  if(true) console.log(items, items.length)
+
   return (
     <ul className="users-list">
-      {items.map(user => (
+      {items.length > 0 && items.map(user => (
         <UserItem
           key={user.id}
           id={user.id}
