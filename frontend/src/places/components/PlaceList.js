@@ -1,0 +1,37 @@
+import React from "react";
+
+import { Card } from "../../shared/components/UI";
+import PlaceItem from "./PlaceItem";
+
+import './PlaceList.css'
+
+const PlaceList = ({ items }) => {
+  if (items.length === 0) {
+    return (
+      <div className="place-lists center">
+        <Card>
+          <h2>No Places found. Maybe create one?</h2>
+          <button>Share Place</button>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <ul className="place-lists">
+      {items.map((place) => (
+        <PlaceItem
+          key={place.id}
+          id={place.id}
+          image={place.imageUrl}
+          title={place.description}
+          address={place.address}
+          creatorId={place.creator}
+          coordinates={place.location}
+        />
+      ))}
+    </ul>
+  );
+};
+
+export default PlaceList;
