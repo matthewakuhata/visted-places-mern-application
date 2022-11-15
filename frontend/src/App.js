@@ -9,7 +9,7 @@ import {
 import Users from "./user/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import UserPlaces from "./places/pages/UserPlaces";
-import { MainNavigation } from "./shared/components/navigation";
+import { MainNavigation } from "./shared/components/Navigation";
 import UpdatePlace from "./places/pages/UpdatePlace";
 import Auth from "./user/pages/Auth";
 
