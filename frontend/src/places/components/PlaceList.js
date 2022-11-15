@@ -24,7 +24,8 @@ const PlaceList = ({ items }) => {
           key={place.id}
           id={place.id}
           image={place.imageUrl}
-          title={place.description}
+          title={place.title}
+          description={place.description}
           address={place.address}
           creatorId={place.creator}
           coordinates={place.location}

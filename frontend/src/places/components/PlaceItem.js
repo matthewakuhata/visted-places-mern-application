@@ -26,8 +26,7 @@ const PlaceItem = ({ id, image, title, address, description, creatorId, coordina
     >
       <div className="map-container">
         <Map
-          longitude={coordinates.longitude}
-          latitude={coordinates.latitude}
+          center={coordinates}
           zoom={16}
        />
       </div>

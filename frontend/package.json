@@ -9,7 +9,11 @@
     "react-map-gl": "^7.0.19",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "ol": "latest"
+  },
+  "devDependencies": {
+    "vite": "^3.0.9"
   },
   "scripts": {
     "start": "react-scripts start",

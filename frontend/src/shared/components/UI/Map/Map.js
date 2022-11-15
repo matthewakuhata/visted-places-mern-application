@@ -1,15 +1,36 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
+import { Map, View } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import {fromLonLat} from 'ol/proj';
 
-import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./Map.css";
 
-const CustomMap = ({ longitude, latitude, zoom, className, style }) => {
+const CustomMap = ({ center, zoom, className, style }) => {
   const mapRef = useRef();
 
+  useEffect(() => {
+    new Map({
+      target: 'map',
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+      ],
+      view: new View({
+        center: fromLonLat([center.lng, center.lat]),
+        zoom: zoom,
+      }),
+    });
+  }, [center, zoom]);
+
   return (
-    <div ref={mapRef} className={`map ${className}`} stlye={style}>
-      <div>Map Location here GOOGLEMAP API</div>
-    </div>
+    <div
+      id="map"
+      className={`map ${className}`}
+      stlye={style}
+    ></div>
   );
 };
 
