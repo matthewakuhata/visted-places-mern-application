@@ -15,20 +15,18 @@ const PlaceItem = ({
   coordinates,
 }) => {
   const [showMap, setShowMap] = useState(false);
-
   const toggleShowMap = () => {
     setShowMap((prev) => !prev);
   };
 
-  console.log({
-    id,
-    image,
-    title,
-    address,
-    description,
-    creatorId,
-    coordinates,
-  });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const toggleShowDeleteModal = () => {
+    setShowDeleteModal((prev) => !prev);
+  };
+  const deletePlaceHandler = () => {
+    console.log("DELETING PLACE");
+    toggleShowDeleteModal();
+  };
 
   return (
     <>
@@ -47,6 +45,26 @@ const PlaceItem = ({
         </div>
       </Modal>
 
+      <Modal
+        show={showDeleteModal}
+        onCancel={toggleShowDeleteModal}
+        classes={{
+          headerClass: "place-item__modal-content",
+          footerClass: "place-item__modal-actions",
+        }}
+        header={"Are you sure?"}
+        footer={
+          <>
+            <Button inverse onClick={toggleShowDeleteModal}>
+              CANCEL
+            </Button>
+            <Button onClick={deletePlaceHandler}>DELETE</Button>
+          </>
+        }
+      >
+        <p>Do you want to proceed with deleting this place?</p>
+      </Modal>
+
       <li className="place-item">
         <Card className="place-item__content">
           <div className="place-item__image">
@@ -62,7 +80,7 @@ const PlaceItem = ({
               VIEW ON MAP
             </Button>
             <Button to={`/places/${id}`}>EDIT</Button>
-            <Button danger>DELETE</Button>
+            <Button onClick={toggleShowDeleteModal}>DELETE</Button>
           </div>
         </Card>
       </li>

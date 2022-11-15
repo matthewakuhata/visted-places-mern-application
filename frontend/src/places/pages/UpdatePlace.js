@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Button, Input } from "../../shared/components/FormElements";
+import { Card } from "../../shared/components/UI";
 import { useForm } from "../../shared/hooks/form-hook";
 import {
   VALIDATOR_REQUIRE,
@@ -58,26 +59,30 @@ const UpdatePlace = () => {
 
   const place = DUMMY_PLACES.find((place) => place.id === placeID);
   useEffect(() => {
-    setFormData(
-      {
-        title: {
-          value: place.title,
-          isValid: true,
+    if (place) {
+      setFormData(
+        {
+          title: {
+            value: place.title,
+            isValid: true,
+          },
+          description: {
+            value: place.description,
+            isValid: true,
+          },
         },
-        description: {
-          value: place.description,
-          isValid: true,
-        },
-      },
-      true
-    );
+        true
+      );
+    }
     setIsLoading(false);
   }, [setFormData, place]);
 
   if (!place) {
     return (
       <div className="center">
-        <h2>Could not find place!</h2>
+        <Card>
+          <h2>Could not find place!</h2>
+        </Card>
       </div>
     );
   }
@@ -86,7 +91,7 @@ const UpdatePlace = () => {
     event.preventDefault();
     console.log(formState.inputs);
   };
-  console.log(formState);
+
   return (
     !isLoading && (
       <form className="place-form" onSubmit={submitUpdateHandler}>
