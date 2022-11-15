@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Input } from "../../shared/components/FormElements";
 import { Card } from "../../shared/components/UI";
+import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
 import {
   VALIDATOR_EMAIL,
@@ -10,6 +11,8 @@ import {
 
 import "./Auth.css";
 const Auth = () => {
+  const { login } = useContext(AuthContext);
+
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm({
     inputs: {
@@ -53,6 +56,8 @@ const Auth = () => {
   const loginHandler = (event) => {
     event.preventDefault();
     console.log(formState.inputs);
+
+    login();
   };
 
   return (
