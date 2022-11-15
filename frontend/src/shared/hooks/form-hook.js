@@ -5,6 +5,8 @@ const formReducer = (state, action) => {
     case "INPUT_CHANGE":
       let formIsValid = true;
       for (const input in state.inputs) {
+        if (!state.inputs[input]) continue;
+
         if (input === action.id) {
           formIsValid =
             formIsValid &&
@@ -45,6 +47,7 @@ export const useForm = ({ inputs, formIsValid }) => {
     dispatch({
       type: "SET_DATA",
       inputs: inputData,
+      initialInputs: inputData,
       formIsValid: formValidity,
     });
   }, []);

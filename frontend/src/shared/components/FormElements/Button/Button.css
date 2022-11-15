@@ -32,6 +32,21 @@
   background: #ff0055;
 }
 
+.button--text {
+  background: transparent;
+  border-color: transparent;
+  padding: 0;
+  font-size: x-small;
+  color: #ff0055;
+}
+
+.button--text:hover,
+.button--text:active {
+  color: black;
+  background: transparent;
+  border-color: transparent;
+}
+
 .button--danger {
   background: #830000;
   border-color: #830000;
