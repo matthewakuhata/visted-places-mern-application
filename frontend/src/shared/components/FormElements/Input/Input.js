@@ -31,10 +31,12 @@ const Input = ({
   className,
   validators,
   onInput,
+  valid,
+  value,
 }) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
-    isValid: false,
+    value: value || "",
+    isValid: valid || false,
   });
 
   useEffect(() => {
