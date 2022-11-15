@@ -1,16 +1,23 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
+
+:root {
+  --main-color: #ff0055;
+  --secondary-color: #f8df00;
+  --background-color: #4d4d4d;
+  --nero-black: #292929;
+}
 
 * {
   box-sizing: border-box;
 }
 
 html {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
   margin: 0;
-  background: #4d4d4d;
+  background: var(--background-color);
 }
 
 .slide-in-left-enter {
