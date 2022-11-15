@@ -1,18 +1,16 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
-import {fromLonLat} from 'ol/proj';
+import { fromLonLat } from "ol/proj";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./Map.css";
 
 const CustomMap = ({ center, zoom, className, style }) => {
-  const mapRef = useRef();
-
   useEffect(() => {
     new Map({
-      target: 'map',
+      target: "map",
       layers: [
         new TileLayer({
           source: new OSM(),
@@ -25,13 +23,7 @@ const CustomMap = ({ center, zoom, className, style }) => {
     });
   }, [center, zoom]);
 
-  return (
-    <div
-      id="map"
-      className={`map ${className}`}
-      stlye={style}
-    ></div>
-  );
+  return <div id="map" className={`map ${className}`} stlye={style}></div>;
 };
 
 export default CustomMap;
