@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
 
 :root {
-  --main-color: #ff0055;
-  --secondary-color: #f8df00;
+  --main-color: #afaab9;
+  --secondary-color: #a5243d;
   --background-color: #4d4d4d;
+  --highlight-main-color: #afaab9b4;
   --nero-black: #292929;
 }
 

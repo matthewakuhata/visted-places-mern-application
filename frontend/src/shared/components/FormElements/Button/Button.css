@@ -17,8 +17,8 @@
 
 .button:hover,
 .button:active {
-  background: #ff4382;
-  border-color: #ff4382;
+  background: var(--highlight-main-color);
+  border-color: transparent;
 }
 
 .button--inverse {
@@ -29,7 +29,8 @@
 .button--inverse:hover,
 .button--inverse:active {
   color: white;
-  background: var(--main-color);
+  background: var(--highlight-main-color);
+  border-color: transparent;
 }
 
 .button--text {
