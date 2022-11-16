@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-import './Card.css';
+import "./Card.css";
 
-const Card = ({className, style, children})=> {
+const Card = ({ className, style, children }) => {
   return (
     <div className={`card ${className}`} style={style}>
       {children}

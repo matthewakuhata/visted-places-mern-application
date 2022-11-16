@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import { Link } from 'react-router-dom'
-import { Avatar, Card } from '../../shared/components/UI'
-import './UserItem.css';
+import { Link } from "react-router-dom";
+import { Avatar, Card } from "../../shared/components/UI";
+import "./UserItem.css";
 
-const UserItem = ({id, name, image, placeCount}) => {
+const UserItem = ({ id, name, image, placeCount }) => {
   return (
     <li className="user-item">
       <Card className="user-item__content">
@@ -15,7 +15,7 @@ const UserItem = ({id, name, image, placeCount}) => {
           <div className="user-item__info">
             <h2>{name}</h2>
             <h3>
-              {placeCount} {placeCount === 1 ? 'Place' : 'Places'}
+              {placeCount} {placeCount === 1 ? "Place" : "Places"}
             </h3>
           </div>
         </Link>

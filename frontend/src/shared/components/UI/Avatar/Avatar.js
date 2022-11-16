@@ -1,15 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import './Avatar.css';
+import "./Avatar.css";
 
-const Avatar = ({style, className, image, alt, width}) => {
+const Avatar = ({ style, className, image, alt, width }) => {
   return (
     <div className={`avatar ${className}`} style={style}>
-      <img
-        src={image}
-        alt={alt}
-        style={{ width: width, height: width }}
-      />
+      <img src={image} alt={alt} style={{ width: width, height: width }} />
     </div>
   );
 };
