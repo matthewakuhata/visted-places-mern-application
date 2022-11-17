@@ -1,5 +1,5 @@
-const uuid = require("uuid/v4");
-
+const { v4 } = require("uuid");
+const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 
 let DUMMY_PLACES = [
@@ -58,9 +58,14 @@ const getPlacesByUserId = (req, res, next) => {
 };
 
 const createPlace = (req, res, next) => {
+    const { errors: fieldErrors } = validationResult(req);
+    if (fieldErrors.length) {
+        return next(new HttpError(null, 422, fieldErrors));
+    }
+
     const { title, description, coordinates, address, creator } = req.body;
     const createdPlace = {
-        id: uuid(),
+        id: v4(),
         title,
         description,
         location: coordinates,
@@ -72,9 +77,12 @@ const createPlace = (req, res, next) => {
 };
 
 const updatePlace = (req, res, next) => {
-    const id = req.params.id;
-    const { title, description } = req.body;
+    const fieldErrors = validationResult(req);
+    if (fieldErrors.length) {
+        return next(new HttpError(null, 422, fieldErrors));
+    }
 
+    const id = req.params.id;
     const foundPlace = { ...DUMMY_PLACES.find((p) => p.id === id) };
     if (!foundPlace) {
         return next(
@@ -82,6 +90,7 @@ const updatePlace = (req, res, next) => {
         );
     }
 
+    const { title, description } = req.body;
     const updatedPlace = {
         title,
         description,

@@ -8,6 +8,9 @@ const app = express();
 
 app.use(bodyParser.json());
 
+/**
+ * API Version 1
+ */
 app.use("/api/v1/", api);
 
 /**
