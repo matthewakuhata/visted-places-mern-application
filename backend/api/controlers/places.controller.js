@@ -68,7 +68,11 @@ const createPlace = (req, res, next) => {
         id: v4(),
         title,
         description,
-        location: coordinates,
+        location: {
+            // use Google API to get coordinates
+            lat: 40.7484405,
+            lng: -73.9878584,
+        },
         address,
         creator,
     };
