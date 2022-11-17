@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const api = require("./api");
 const HttpError = require("./api/models/http-error");
@@ -36,4 +38,14 @@ app.use((error, req, res, next) => {
     res.json({ message: error.message });
 });
 
-app.listen("5000");
+mongoose
+    .connect(process.env.MONGO_API_CONNECT)
+    .then(() => {
+        console.log("Connected to MongoDB");
+
+        app.listen("5000");
+        console.log("Listening on port 5000");
+    })
+    .catch((error) => {
+        console.log(error);
+    });

@@ -1,5 +1,7 @@
 const { v4 } = require("uuid");
 const { validationResult } = require("express-validator");
+
+const Place = require("../models/place");
 const HttpError = require("../models/http-error");
 
 let DUMMY_PLACES = [
@@ -57,25 +59,34 @@ const getPlacesByUserId = (req, res, next) => {
     return res.status(200).json(places);
 };
 
-const createPlace = (req, res, next) => {
+const createPlace = async (req, res, next) => {
     const { errors: fieldErrors } = validationResult(req);
     if (fieldErrors.length) {
         return next(new HttpError(null, 422, fieldErrors));
     }
 
-    const { title, description, coordinates, address, creator } = req.body;
-    const createdPlace = {
+    const { title, description, coordinates, address, creator, image } =
+        req.body;
+
+    const createdPlace = new Place({
         id: v4(),
         title,
         description,
+        image,
         location: {
             // use Google API to get coordinates
-            lat: 40.7484405,
-            lng: -73.9878584,
+            lat: coordinates.lat || 40.7484405,
+            lng: coordinates.lng || -73.9878584,
         },
         address,
         creator,
-    };
+    });
+
+    try {
+        await createdPlace.save();
+    } catch (error) {
+        return next(new HttpError(`${error.message} please try again!`, 500));
+    }
 
     return res.status(201).json(createdPlace);
 };
