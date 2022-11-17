@@ -4,6 +4,6 @@ const placesRouter = require("./routes/places.routes");
 
 const api = express.Router();
 
-api.use(placesRouter);
+api.use("/places", placesRouter);
 
 module.exports = api;
