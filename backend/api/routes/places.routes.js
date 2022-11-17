@@ -19,12 +19,12 @@ router.post(
     controller.createPlace
 );
 
+router.delete("/:id", controller.deletePlace);
+
 router.patch(
     "/:id",
     [check("title").not().isEmpty(), check("description").isLength({ min: 5 })],
     controller.updatePlace
 );
-
-router.delete("/:id", controller.deletePlace);
 
 module.exports = router;

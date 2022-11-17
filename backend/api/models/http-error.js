@@ -8,7 +8,7 @@ class HttpError extends Error {
             this.message = "Unkown error occured";
         }
 
-        this.code = errorCode;
+        this.code = errorCode || 404;
     }
 
     getErrorFieldsMessage(errorFields) {
