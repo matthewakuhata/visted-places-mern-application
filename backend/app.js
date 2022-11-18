@@ -19,7 +19,7 @@ app.use("/api/v1/", api);
  * Unknown API routes handling
  */
 app.use((req, res, next) => {
-    throw HttpError("Could not find this route", 404);
+    throw new HttpError(`Unkown path ${req.method} ${req.path}`, 404);
 });
 
 /**
