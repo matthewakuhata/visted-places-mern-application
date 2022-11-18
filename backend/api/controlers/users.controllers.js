@@ -1,6 +1,7 @@
 const { v4 } = require("uuid");
 const { validationResult } = require("express-validator");
 
+const User = require("../models/user");
 const HttpError = require("../models/http-error");
 
 const USERS = [
@@ -11,46 +12,64 @@ const USERS = [
         places: 3,
     },
 ];
-const getUsers = (req, res, next) => {
-    const id = req.params.id;
 
-    res.status(200).json(USERS);
+const getUsers = async (req, res, next) => {
+    try {
+        const users = await User.find({}, "-password");
+        const mappedUsers = users.map((user) =>
+            user.toObject({ getter: true })
+        );
+        res.status(200).json(mappedUsers);
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
+    }
 };
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
     const { email, password } = req.body;
-    const user = DUMMY_USERS.find((p) => p.id === id);
+    try {
+        const user = await User.findOne({ email: email });
 
-    const foundUser = true;
-    const passwordValid = true;
-    if (!foundUser || !passwordValid) {
-        return next(new HttpError("Invalid user name or password", 401));
+        const passwordValid = password === user?.password;
+        if (!user || !passwordValid) {
+            return next(new HttpError("Invalid username or password", 401));
+        }
+
+        res.status(200).json({ message: "logged in!" });
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
     }
-
-    res.status(200).json({ message: "logged in!" });
 };
 
-const signup = (req, res, next) => {
-    const { name, email, password } = req.body;
+const signup = async (req, res, next) => {
+    const { name, email, password, image } = req.body;
 
-    const hasUser = false;
-    if (hasUser) {
-        next(new HttpError("Email already registered", 409));
+    try {
+        const existingUser = await User.findOne({ email: email });
+        if (existingUser) {
+            return next(
+                new HttpError("Email already registered. Please login", 422)
+            );
+        }
+
+        const fieldErrors = validationResult(req);
+        if (fieldErrors.length) {
+            return next(new HttpError(null, 422, fieldErrors));
+        }
+
+        const createdUser = new User({
+            name,
+            email,
+            password,
+            image: "123",
+            places: [],
+        });
+
+        await createdUser.save();
+        res.status(201).json(createdUser.toObject({ getters: true }));
+    } catch (error) {
+        return next(new HttpError(error.message, 500));
     }
-
-    const fieldErrors = validationResult(req);
-    if (fieldErrors.length) {
-        return next(new HttpError(null, 422, fieldErrors));
-    }
-
-    const createdUser = {
-        id: v4(),
-        name,
-        email,
-        password,
-    };
-
-    res.status(201).json(createdUser);
 };
 
 exports.getUsers = getUsers;

@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", controller.getUsers);
 
-router.get(
+router.post(
     "/signup",
     [
         check("email").normalizeEmail().isEmail(),
@@ -17,6 +17,6 @@ router.get(
     controller.signup
 );
 
-router.get("/login", controller.login);
+router.post("/login", controller.login);
 
 module.exports = router;
