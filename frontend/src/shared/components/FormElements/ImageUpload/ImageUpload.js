@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Button from "../Button/Button";
+import Button from "./Button/Button";
 
 import "./ImageUpload.css";
 
@@ -32,4 +32,3 @@ const ImageUpload = ({ id, center, buttonLabel }) => {
 };
 
 export default ImageUpload;
-
