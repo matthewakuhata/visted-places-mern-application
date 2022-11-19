@@ -33,6 +33,7 @@ const login = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
+    console.log("here");
     const { name, email, password, image } = req.body;
 
     try {

@@ -32,7 +32,7 @@ const UserPlaces = () => {
 
     return isLoading ? (
         <div className="center">
-            <LoadingSpinner />
+            <LoadingSpinner asOverlay />
         </div>
     ) : (
         <PlaceList

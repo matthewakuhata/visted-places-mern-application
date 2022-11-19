@@ -1,3 +1,3 @@
 export { default as Button } from "./Button/Button";
 export { default as Input } from "./Input/Input";
-export { default as ImageUpload } from "./ImageUpload/ImageUpload";
+export { default as ImageInput } from "./ImageInput/ImageInput";

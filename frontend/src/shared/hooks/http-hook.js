@@ -7,7 +7,12 @@ export const useHttpClient = () => {
     const activeRequests = useRef([]);
 
     const sendRequest = useCallback(
-        async (url, method = "GET", headers = {}, body = null) => {
+        async (
+            url,
+            method = "GET",
+            body = null,
+            headers = { "Content-Type": "application/json" }
+        ) => {
             try {
                 setIsLoading(true);
 
@@ -17,11 +22,7 @@ export const useHttpClient = () => {
                 const response = await fetch(getFullUrl(url), {
                     method,
                     body,
-                    headers: {
-                        ...headers,
-                        "Content-Type":
-                            headers["Content-Type"] || "application/json",
-                    },
+                    headers,
                     signal: abortController.signal,
                 });
 

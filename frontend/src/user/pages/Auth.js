@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import {
     Button,
-    ImageUpload,
+    ImageInput,
     Input,
 } from "../../shared/components/FormElements";
 import { Card, ErrorModal, LoadingSpinner } from "../../shared/components/UI";
@@ -40,6 +40,7 @@ const Auth = () => {
                 {
                     ...formState.inputs,
                     name: undefined,
+                    image: undefined,
                 },
                 formState.inputs.email.isValid &&
                     formState.inputs.password.isValid
@@ -52,6 +53,10 @@ const Auth = () => {
                         value: "",
                         isValid: false,
                     },
+                    image: {
+                        value: null,
+                        isValid: false,
+                    },
                 },
                 false
             );
@@ -62,23 +67,36 @@ const Auth = () => {
 
     const loginHandler = async (event) => {
         event.preventDefault();
+        const { name, email, password, image } = formState.inputs;
 
-        const url = isLoginMode ? `/users/login` : `/users/signup`;
-        const { name, email, password } = formState.inputs;
+        if (isLoginMode) {
+            const { success, data } = await sendRequest(
+                "/users/login",
+                "POST",
+                JSON.stringify({
+                    email: email.value,
+                    password: password.value,
+                })
+            );
 
-        const { success, data } = await sendRequest(
-            url,
-            "POST",
-            {},
-            JSON.stringify({
-                name: name?.value,
-                email: email.value,
-                password: password.value,
-            })
-        );
+            if (success) {
+                login(data.id);
+            }
+        } else {
+            const formData = new FormData();
+            formData.append("email", email.value);
+            formData.append("name", name.value);
+            formData.append("password", password.value);
+            formData.append("image", image.value);
+            const { success, data } = await sendRequest(
+                "/users/signup",
+                "POST",
+                formData
+            );
 
-        if (success) {
-            login(data.id);
+            if (success) {
+                login(data.id);
+            }
         }
     };
 
@@ -90,9 +108,10 @@ const Auth = () => {
             <form onSubmit={loginHandler}>
                 {!isLoginMode && (
                     <>
-                        <ImageUpload
+                        <ImageInput
                             center
-                            buttonLabel="Profile Image"
+                            buttonLabel="Add Profile Image"
+                            onInput={inputHandler}
                             id="image"
                         />
                         <Input

@@ -16,7 +16,6 @@ const PlaceItem = ({
     onDelete,
     coordinates,
 }) => {
-    console.log(image);
     const { isLoggedIn } = useContext(AuthContext);
     const { isLoading, sendRequest } = useHttpClient();
 

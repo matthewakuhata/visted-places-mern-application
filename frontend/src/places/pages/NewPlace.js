@@ -42,7 +42,6 @@ const NewPlace = () => {
         const { success } = await sendRequest(
             "/places",
             "POST",
-            {},
             JSON.stringify({
                 title: title.value,
                 description: description.value,

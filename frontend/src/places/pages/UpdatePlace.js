@@ -65,7 +65,6 @@ const UpdatePlace = () => {
         const response = await sendRequest(
             `/places/${placeId}`,
             "PATCH",
-            {},
             JSON.stringify({
                 title: title.value,
                 description: description.value,
@@ -80,7 +79,7 @@ const UpdatePlace = () => {
     if (isLoading) {
         return (
             <div className="center">
-                <LoadingSpinner />
+                <LoadingSpinner asOverlay />
             </div>
         );
     }
