@@ -91,7 +91,8 @@ const Auth = () => {
             const { success, data } = await sendRequest(
                 "/users/signup",
                 "POST",
-                formData
+                formData,
+                {}
             );
 
             if (success) {
