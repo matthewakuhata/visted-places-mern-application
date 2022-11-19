@@ -90,7 +90,11 @@ const Auth = () => {
             <form onSubmit={loginHandler}>
                 {!isLoginMode && (
                     <>
-                        <ImageUpload center id="image" />
+                        <ImageUpload
+                            center
+                            buttonLabel="Profile Image"
+                            id="image"
+                        />
                         <Input
                             type="text"
                             id="name"
