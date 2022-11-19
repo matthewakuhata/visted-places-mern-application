@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import Button from "../Button/Button";
 
-import "./imageUpload.css";
+import "./ImageUpload.css";
 
-const imageUpload = () => {
+const ImageUpload = ({ id, center }) => {
     const filePickerRef = useRef();
     const pickedHandler = (event) => {};
     const pickImageHandler = () => {
@@ -15,7 +15,7 @@ const imageUpload = () => {
                 ref={filePickerRef}
                 type="file"
                 id={id}
-                style={{ display: none }}
+                style={{ display: "none" }}
                 accept=".jpg,.png,.jpeg"
             />
             <div className={`image-upload ${center && "center"}`}>
@@ -30,4 +30,4 @@ const imageUpload = () => {
     );
 };
 
-export default imageUpload;
+export default ImageUpload;

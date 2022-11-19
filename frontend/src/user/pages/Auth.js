@@ -1,5 +1,9 @@
 import React, { useContext, useState } from "react";
-import { Button, Input } from "../../shared/components/FormElements";
+import {
+    Button,
+    ImageUpload,
+    Input,
+} from "../../shared/components/FormElements";
 import { Card, ErrorModal, LoadingSpinner } from "../../shared/components/UI";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
@@ -85,14 +89,17 @@ const Auth = () => {
             <h2>{isLoginMode ? "Login Required" : "Sign up"}</h2>
             <form onSubmit={loginHandler}>
                 {!isLoginMode && (
-                    <Input
-                        type="text"
-                        id="name"
-                        label="Name"
-                        onInput={inputHandler}
-                        validators={[VALIDATOR_REQUIRE()]}
-                        errorText="Please enter your name"
-                    />
+                    <>
+                        <ImageUpload center id="image" />
+                        <Input
+                            type="text"
+                            id="name"
+                            label="Name"
+                            onInput={inputHandler}
+                            validators={[VALIDATOR_REQUIRE()]}
+                            errorText="Please enter your name"
+                        />
+                    </>
                 )}
                 <Input
                     type="email"
