@@ -1,7 +1,11 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 
-import { Input, Button } from "../../shared/components/FormElements";
+import {
+    Input,
+    Button,
+    ImageInput,
+} from "../../shared/components/FormElements";
 import { ErrorModal, LoadingSpinner } from "../../shared/components/UI";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
@@ -32,24 +36,24 @@ const NewPlace = () => {
                 value: "",
                 isValid: false,
             },
+            image: {
+                value: "",
+                isValid: false,
+            },
         },
     });
 
     const placeSubmitHandler = async (event) => {
         event.preventDefault();
-        const { title, description, address } = formState.inputs;
+        const { title, description, address, image } = formState.inputs;
+        const formData = new FormData();
+        formData.append("title", title.value);
+        formData.append("description", description.value);
+        formData.append("address", address.value);
+        formData.append("creator", userId);
+        formData.append("image", image.value);
 
-        const { success } = await sendRequest(
-            "/places",
-            "POST",
-            JSON.stringify({
-                title: title.value,
-                description: description.value,
-                address: address.value,
-                creator: userId,
-            })
-        );
-
+        const { success } = await sendRequest("/places", "POST", formData, {});
         if (success) {
             history.push(`/`);
         }
@@ -60,6 +64,12 @@ const NewPlace = () => {
             <ErrorModal error={error} clearError={clearError} />
             <form onSubmit={placeSubmitHandler} className="place-form">
                 {isLoading && <LoadingSpinner asOverlay />}
+                <ImageInput
+                    center
+                    buttonLabel="Add Place image"
+                    onInput={inputHandler}
+                    id="image"
+                />
                 <Input
                     id="title"
                     type="text"

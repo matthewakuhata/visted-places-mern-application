@@ -56,8 +56,7 @@ const createPlace = async (req, res, next) => {
     }
 
     try {
-        const { title, description, coordinates, address, creator, image } =
-            req.body;
+        const { title, description, coordinates, address, creator } = req.body;
 
         const user = await User.findById(creator);
         if (!user) {
@@ -68,7 +67,7 @@ const createPlace = async (req, res, next) => {
             id: v4(),
             title,
             description,
-            image: image || "not an image",
+            image: req.file.path,
             location: {
                 // use Google API to get coordinates
                 lat: coordinates?.lat || 40.7484405,

@@ -80,7 +80,10 @@ const PlaceItem = ({
                 {isLoading && <LoadingSpinner asOverlay />}
                 <Card className="place-item__content">
                     <div className="place-item__image">
-                        <img src={image} alt={title} />
+                        <img
+                            src={`http://localhost:5000/api/v1/${image}`}
+                            alt={title}
+                        />
                     </div>
                     <div className="place-item__info">
                         <h2>{title}</h2>
