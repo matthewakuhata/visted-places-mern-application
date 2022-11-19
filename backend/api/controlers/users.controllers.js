@@ -8,7 +8,7 @@ const getUsers = async (req, res, next) => {
     try {
         const users = await User.find({}, "-password");
         const mappedUsers = users.map((user) =>
-            user.toObject({ getter: true })
+            user.toObject({ getters: true })
         );
         res.status(200).json(mappedUsers);
     } catch (error) {
@@ -26,7 +26,7 @@ const login = async (req, res, next) => {
             return next(new HttpError("Invalid username or password", 401));
         }
 
-        res.status(200).json({ message: "logged in!" });
+        res.status(200).json({ message: "logged in!", id: user.id });
     } catch (error) {
         return next(new HttpError(error.message, 500));
     }

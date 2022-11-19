@@ -62,7 +62,7 @@ const Auth = () => {
         const url = isLoginMode ? `/users/login` : `/users/signup`;
         const { name, email, password } = formState.inputs;
 
-        const data = await sendRequest(
+        const { success, data } = await sendRequest(
             url,
             "POST",
             {},
@@ -73,8 +73,8 @@ const Auth = () => {
             })
         );
 
-        if (data.success) {
-            login();
+        if (success) {
+            login(data.id);
         }
     };
 

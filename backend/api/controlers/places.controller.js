@@ -68,11 +68,11 @@ const createPlace = async (req, res, next) => {
             id: v4(),
             title,
             description,
-            image,
+            image: image || "not an image",
             location: {
                 // use Google API to get coordinates
-                lat: coordinates.lat || 40.7484405,
-                lng: coordinates.lng || -73.9878584,
+                lat: coordinates?.lat || 40.7484405,
+                lng: coordinates?.lng || -73.9878584,
             },
             address,
             creator,
