@@ -68,5 +68,5 @@ export const useHttpClient = () => {
 };
 
 export function getFullUrl(url) {
-    return `http://localhost:5000/api/v1${url}`;
+    return `${process.env.REACT_APP_BACKEND_API_URL}${url}`;
 }

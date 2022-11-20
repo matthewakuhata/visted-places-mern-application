@@ -6,6 +6,7 @@ import { Map } from "../../shared/components/UI";
 import "./PlaceItem.css";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import { getImageUrl } from "../../shared/utils/image-url";
 
 const PlaceItem = ({
     id,
@@ -80,10 +81,7 @@ const PlaceItem = ({
                 {isLoading && <LoadingSpinner asOverlay />}
                 <Card className="place-item__content">
                     <div className="place-item__image">
-                        <img
-                            src={`http://localhost:5000/api/v1/${image}`}
-                            alt={title}
-                        />
+                        <img src={getImageUrl(image)} alt={title} />
                     </div>
                     <div className="place-item__info">
                         <h2>{title}</h2>
