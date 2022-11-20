@@ -1,8 +1,10 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useContext } from "react";
+import { AuthContext } from "../context/auth-context";
 
 export const useHttpClient = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
+    const { token } = useContext(AuthContext);
 
     const activeRequests = useRef([]);
 
@@ -22,7 +24,10 @@ export const useHttpClient = () => {
                 const response = await fetch(getFullUrl(url), {
                     method,
                     body,
-                    headers,
+                    headers: {
+                        ...headers,
+                        authorization: `BEARER ${token}`,
+                    },
                     signal: abortController.signal,
                 });
 
@@ -43,7 +48,7 @@ export const useHttpClient = () => {
                 return { success: false, data: error.message };
             }
         },
-        []
+        [token]
     );
 
     const clearError = () => {

@@ -80,7 +80,7 @@ const Auth = () => {
             );
 
             if (success) {
-                login(data.id);
+                login(data.userId, data.token);
             }
         } else {
             const formData = new FormData();
@@ -96,7 +96,7 @@ const Auth = () => {
             );
 
             if (success) {
-                login(data.id);
+                login(data.userId, data.token);
             }
         }
     };

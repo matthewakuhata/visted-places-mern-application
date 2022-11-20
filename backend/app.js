@@ -1,5 +1,5 @@
-const fs = require("fs");
 const express = require("express");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
     BrowserRouter as Router,
     Route,
@@ -15,23 +15,49 @@ import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth-context";
 
 const App = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [token, setToken] = useState(false);
     const [userId, setUserId] = useState(null);
 
-    const login = useCallback((id) => {
-        setIsLoggedIn(true);
+    const login = useCallback((id, token, expiration) => {
+        setToken(token);
         setUserId(id);
+        const tokenExpiration =
+            expiration || new Date(new Date().getTime() + 1000 * 60 * 60);
+
+        localStorage.setItem(
+            "userData",
+            JSON.stringify({
+                userId: id,
+                token,
+                expiration: tokenExpiration.getTime(),
+            })
+        );
     }, []);
+
+    useEffect(() => {
+        const { userId, token, expiration } =
+            JSON.parse(localStorage.getItem("userData")) || {};
+        if (!userId || !token || !expiration) return;
+
+        const crrTime = new Date().getTime();
+        const isValid = expiration > crrTime;
+        if (isValid) {
+            login(userId, token, new Date(expiration));
+        }
+    }, [login]);
 
     const logout = useCallback(() => {
-        setIsLoggedIn(false);
+        setToken(null);
         setUserId(null);
+        localStorage.removeItem("userData");
     }, []);
 
-    const routes = getRoutes(isLoggedIn);
+    const routes = getRoutes(token);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout, userId }}>
+        <AuthContext.Provider
+            value={{ isLoggedIn: !!token, token, login, logout, userId }}
+        >
             <Router>
                 <MainNavigation />
                 <main>{routes}</main>
@@ -40,8 +66,8 @@ const App = () => {
     );
 };
 
-const getRoutes = (isLoggedIn) => {
-    return isLoggedIn ? (
+const getRoutes = (token) => {
+    return token ? (
         <Switch>
             <Route path="/" exact>
                 <Users />

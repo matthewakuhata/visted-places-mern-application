@@ -1,6 +1,6 @@
-const { v4 } = require("uuid");
-const { validationResult } = require("express-validator");
+const fs = require("fs");
 const mongoose = require("mongoose");
+const { validationResult } = require("express-validator");
 
 const Place = require("../models/place");
 const User = require("../models/user");
@@ -56,25 +56,24 @@ const createPlace = async (req, res, next) => {
     }
 
     try {
-        const { title, description, coordinates, address, creator } = req.body;
+        const { title, description, coordinates, address } = req.body;
 
-        const user = await User.findById(creator);
+        const user = await User.findById(req.userData.userId);
         if (!user) {
             return next(new HttpError("User not found!", 404));
         }
 
         const createdPlace = new Place({
-            id: v4(),
             title,
             description,
-            image: req.file.path,
+            image: req.file?.path || " ",
             location: {
                 // use Google API to get coordinates
                 lat: coordinates?.lat || 40.7484405,
                 lng: coordinates?.lng || -73.9878584,
             },
             address,
-            creator,
+            creator: user.id,
         });
 
         const session = await mongoose.startSession();
@@ -110,6 +109,12 @@ const updatePlace = async (req, res, next) => {
             );
         }
 
+        if (foundPlace.creator.toString() !== req.userData.userId) {
+            return next(
+                new HttpError("You are not allowed to edit this place", 401)
+            );
+        }
+
         const { title, description } = req.body;
         foundPlace.title = title;
         foundPlace.description = description;
@@ -126,9 +131,16 @@ const deletePlace = async (req, res, next) => {
 
     try {
         const foundPlace = await Place.findById(id).populate("creator");
+        const imagePath = foundPlace.image;
 
         if (!foundPlace) {
             return next(new HttpError("Could not find place!", 404));
+        }
+
+        if (foundPlace.creator.id !== req.userData.userId) {
+            return next(
+                new HttpError("You are not allowed to delete this place", 401)
+            );
         }
 
         const session = await mongoose.startSession();
@@ -139,6 +151,7 @@ const deletePlace = async (req, res, next) => {
         await foundPlace.creator.save({ session: session });
         session.commitTransaction();
 
+        fs.unlink(imagePath, (err) => console.log(err));
         return res.status(200).json({ message: "Place deleted" });
     } catch (error) {
         return next(new HttpError(error.message, 500));

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 
 import {
@@ -7,7 +7,6 @@ import {
     ImageInput,
 } from "../../shared/components/FormElements";
 import { ErrorModal, LoadingSpinner } from "../../shared/components/UI";
-import { AuthContext } from "../../shared/context/auth-context";
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import {
@@ -20,7 +19,6 @@ import "./PlaceForm.css";
 const NewPlace = () => {
     const history = useHistory();
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
-    const { userId } = useContext(AuthContext);
     const [formState, inputHandler] = useForm({
         formIsValid: false,
         inputs: {
@@ -50,7 +48,6 @@ const NewPlace = () => {
         formData.append("title", title.value);
         formData.append("description", description.value);
         formData.append("address", address.value);
-        formData.append("creator", userId);
         formData.append("image", image.value);
 
         const { success } = await sendRequest("/places", "POST", formData, {});

@@ -1,4 +1,5 @@
-const { v4 } = require("uuid");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 
 const User = require("../models/user");
@@ -18,22 +19,35 @@ const getUsers = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     const { email, password } = req.body;
+
     try {
         const user = await User.findOne({ email: email });
-
-        const passwordValid = password === user?.password;
-        if (!user || !passwordValid) {
-            return next(new HttpError("Invalid username or password", 401));
+        if (!user) {
+            return next(new HttpError("Invalid username or password", 403));
         }
 
-        res.status(200).json({ message: "logged in!", id: user.id });
+        const passwordValid = await bcrypt.compare(password, user.password);
+        if (!passwordValid) {
+            return next(new HttpError("Invalid username or password", 403));
+        }
+
+        const token = jwt.sign(
+            {
+                userId: user.id,
+                email: user.email,
+            },
+            process.env.JWT_TOKEN_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.status(200).json({ userId: user.id, token });
     } catch (error) {
         return next(new HttpError(error.message, 500));
     }
 };
 
 const signup = async (req, res, next) => {
-    const { name, email, password, image } = req.body;
+    const { name, email, password } = req.body;
 
     try {
         const existingUser = await User.findOne({ email: email });
@@ -48,16 +62,27 @@ const signup = async (req, res, next) => {
             return next(new HttpError(null, 422, fieldErrors));
         }
 
+        const hashedPassword = await bcrypt.hash(password, 12);
         const createdUser = new User({
             name,
             email,
-            password,
-            image: req.file.path,
+            password: hashedPassword,
+            image: req.file?.path || " ",
             places: [],
         });
 
         await createdUser.save();
-        res.status(201).json(createdUser.toObject({ getters: true }));
+
+        const token = jwt.sign(
+            {
+                userId: createdUser.id,
+                email: createdUser.email,
+            },
+            process.env.JWT_TOKEN_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        res.status(201).json({ userId: createdUser.id, token });
     } catch (error) {
         return next(new HttpError(error.message, 500));
     }
