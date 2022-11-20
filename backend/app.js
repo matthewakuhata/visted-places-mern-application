@@ -63,8 +63,8 @@ mongoose
     .then(() => {
         console.log("Connected to MongoDB");
 
-        app.listen("5000");
-        console.log("Listening on port 5000");
+        app.listen(process.env.port || "5000");
+        console.log("Listening on port " + process.env.port);
     })
     .catch((error) => {
         console.log(error);
