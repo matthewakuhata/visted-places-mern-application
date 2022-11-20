@@ -12,8 +12,8 @@ const PlaceList = ({ items, isCurrentUser, onDelete }) => {
             <div className="place-lists center">
                 <Card>
                     <h2>
-                        No Places found for user.{" "}
-                        {isCurrentUser && "Maybe create one?"}
+                        No Places found for user.
+                        {isCurrentUser && " Maybe create one?"}
                     </h2>
                     {isCurrentUser && (
                         <Button to="/places/new">Share Place</Button>

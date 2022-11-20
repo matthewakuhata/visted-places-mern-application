@@ -3,11 +3,15 @@ const { check } = require("express-validator");
 
 const controller = require("../controlers/users.controllers");
 const fileUpload = require("../../middleware/file-upload");
+const checkAuth = require("../../middleware/check-auth");
 
 const router = express.Router();
 
 router.get("/", controller.getUsers);
 
+/**
+ * /users/signup
+ */
 router.post(
     "/signup",
     fileUpload.single("image"),
@@ -19,6 +23,17 @@ router.post(
     controller.signup
 );
 
+/**
+ * /users/login
+ */
 router.post("/login", controller.login);
+
+/**
+ * /users/validate
+ */
+router.use(checkAuth);
+router.post("/validate", (req, res, next) => {
+    return res.status(200).json({ message: "Token Validated!" });
+});
 
 module.exports = router;

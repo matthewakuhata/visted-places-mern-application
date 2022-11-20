@@ -67,6 +67,6 @@ export const useHttpClient = () => {
     return { isLoading, error, sendRequest, clearError };
 };
 
-function getFullUrl(url) {
+export function getFullUrl(url) {
     return `http://localhost:5000/api/v1${url}`;
 }
